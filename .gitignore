@@ -6,3 +6,4 @@
 **/bin/
 **/obj/
 **swagger.json
+/SomeWebApp/SomeWebApp.csproj.user

@@ -1,15 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>SomeWebApp.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Global.Services.Common.Service.OpenApi" Version="1.0.17" GeneratePathProperty="true" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.3" />
+    <!--<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.3" />-->
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="$(PkgMicrosoft_Azure_Global_Services_Common_Service_OpenApi)\lib\netcoreapp3.1\Microsoft.Azure.Global.Services.Common.Service.OpenApi.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>

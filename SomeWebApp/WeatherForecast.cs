@@ -1,13 +1,28 @@
+using JsonSubTypes;
+using Microsoft.Azure.Global.Services.Common.Service.OpenApi.Extensions;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace SomeWebApp
 {
-    [SwaggerSchema(Required = new[] { "TemperatureC" })]
-    [SwaggerSubType(typeof(WeatherForecastNetanya), DiscriminatorValue = "WeatherForecastNetanya")]
-    [SwaggerSubType(typeof(WeatherForecastJerusalem), DiscriminatorValue = "WeatherForecastJerusalem")]
+    //[SwaggerSchema(Required = new[] { "TemperatureC" })]
+    //[SwaggerSubTypes(typeof(WeatherForecastNetanya), typeof(WeatherForecastJerusalem))]
+    //[SwaggerSubType(typeof(WeatherForecastNetanya))]
+    //[SwaggerSubType(typeof(WeatherForecastJerusalem))]
+
+    [JsonConverter(typeof(JsonSubtypes))]
+    [JsonSubtypes.KnownSubType(typeof(WeatherForecastNetanya), "Type")]
+    [JsonSubtypes.KnownSubType(typeof(WeatherForecastJerusalem), "Type")]
+    //[KnownType(typeof(WeatherForecastJerusalem))]
     abstract public class WeatherForecast
     {
+        [Required]
+        [JsonProperty(PropertyName = "type")]
+        public abstract GeoJsonObjectType Type { get; set; }
         public DateTime Date { get; set; }
 
         [SwaggerSchema("The WeatherForecast Temperature Celsius", ReadOnly = true)]
@@ -19,13 +34,32 @@ namespace SomeWebApp
     }
 
 
+
+    [SubTypeOf(typeof(WeatherForecast))]
+    /// <summary>
+    /// Som description!
+    /// </summary>    
     public class WeatherForecastNetanya : WeatherForecast
     {
+        public WeatherForecastNetanya()
+        {
+            Type = GeoJsonObjectType.Netanya;
+        }
+        [Mutability(Mutability = MutabilityTypes.read)]
+        [ReadOnly(true)]
         public int SomeNetanyaProp { get; set; }
+        public override GeoJsonObjectType Type { get; set; }
     }
 
+    [SubTypeOf(typeof(WeatherForecast))]
     public class WeatherForecastJerusalem : WeatherForecast
     {
+        public WeatherForecastJerusalem()
+        {
+            Type = GeoJsonObjectType.Jerusalem;
+        }
+        [ReadOnly(true)]
         public int SomeJerusalemProp { get; set; }
+        public override GeoJsonObjectType Type { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

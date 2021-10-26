@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SomeWebApp</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.HideInDocsAttribute">
+            <summary>
+            A marker attribute which can be applied to an API or controller to hide from docs.
+            <see cref="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.HideInDocsFilter"/> Swagger document filter is going to use it.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.HideInDocsFilter">
+            <summary>
+            A conditional document filter to hide an API or whole controller.
+            ** Issue: it is not removing definitions of respective API.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.HideInDocsFilter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.HideInDocsFilter"/> class.
+            </summary>       
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.HideInDocsFilter.Apply(Microsoft.OpenApi.Models.OpenApiDocument,Swashbuckle.AspNetCore.SwaggerGen.DocumentFilterContext)">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>

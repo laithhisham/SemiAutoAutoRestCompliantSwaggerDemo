@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers;
+using Microsoft.Azure.Global.Services.Common.Service.OpenApi.Extensions;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
@@ -8,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace SomeWebApp.Controllers
 {
+    [Examples("SOME_EXAMPLES")]
     [SwaggerTag("Create, read, update and delete WeatherForecast")]
     [ApiController]
     [Route("[controller]")]
@@ -19,7 +22,7 @@ namespace SomeWebApp.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private IEnumerable<WeatherForecast> _db;
+        public static IEnumerable<WeatherForecast> _db;
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
@@ -41,7 +44,7 @@ namespace SomeWebApp.Controllers
                     SomeJerusalemProp = 33
                 }));
         }
-
+        
         [SwaggerOperation(
             Summary = "Get a weather forecast",
             Description = "fetches from Db",
@@ -49,10 +52,34 @@ namespace SomeWebApp.Controllers
             Tags = new[] { "forecast" })]
         [SwaggerResponse(200, "The WeatherForecast was fetched", typeof(IEnumerable<WeatherForecast>))]
         [SwaggerResponse(400, "invalid request")]
+        //[SwaggerResponseExample(200, typeof(StringResponseExample))]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get([FromQuery, SwaggerParameter("WeatherForecast Id", Required = true)] string id)
         {
             return _db;
         }
+        
+        [HideInDocs]
+        [SwaggerOperation(
+         Summary = "Get a weather forecast",
+         Description = "fetches from Db",
+         OperationId = "Get",
+         Tags = new[] { "forecast" })]
+        [SwaggerResponse(200, "The WeatherForecast was fetched", typeof(IEnumerable<WeatherForecast>))]
+        [SwaggerResponse(400, "invalid request")]
+        //[SwaggerResponseExample(200, typeof(StringResponseExample))]
+        [HttpGet("InternalApi")]
+        public IEnumerable<WeatherForecast> InternalApi([FromQuery, SwaggerParameter("WeatherForecast Id", Required = true)] string id)
+        {
+            return _db;
+        }
     }
+
+    //public class StringResponseExample : IExamplesProvider
+    //{
+    //    public object GetExamples()
+    //    {
+    //        return WeatherForecastController._db.Take(2);
+    //    }
+    //}
 }
