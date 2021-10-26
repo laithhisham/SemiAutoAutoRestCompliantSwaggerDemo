@@ -19,7 +19,7 @@ namespace SomeWebApp
 
         private static IList<Type> PolymorphicTypes()
         {
-            return new List<Type> { };
+            return new List<Type> {  };
         }
 
         private static Dictionary<string, OpenApiParameter> GetParameters()

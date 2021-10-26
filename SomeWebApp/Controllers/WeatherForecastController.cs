@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace SomeWebApp.Controllers
 {
+    [AzureResource]
     [Examples("SOME_EXAMPLES")]
     [SwaggerTag("Create, read, update and delete WeatherForecast")]
     [ApiController]

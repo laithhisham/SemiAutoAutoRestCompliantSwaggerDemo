@@ -5,18 +5,17 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 
 namespace SomeWebApp
 {
+    //[AzureResource]
     //[SwaggerSchema(Required = new[] { "TemperatureC" })]
     //[SwaggerSubTypes(typeof(WeatherForecastNetanya), typeof(WeatherForecastJerusalem))]
     //[SwaggerSubType(typeof(WeatherForecastNetanya))]
     //[SwaggerSubType(typeof(WeatherForecastJerusalem))]
-
-    [JsonConverter(typeof(JsonSubtypes))]
-    [JsonSubtypes.KnownSubType(typeof(WeatherForecastNetanya), "Type")]
-    [JsonSubtypes.KnownSubType(typeof(WeatherForecastJerusalem), "Type")]
+    [JsonConverter(typeof(JsonSubtypes), "type")]    
+    [JsonSubtypes.KnownSubType(typeof(WeatherForecastNetanya), "type")]
+    [JsonSubtypes.KnownSubType(typeof(WeatherForecastJerusalem), "type")]
     //[KnownType(typeof(WeatherForecastJerusalem))]
     abstract public class WeatherForecast
     {
@@ -32,7 +31,6 @@ namespace SomeWebApp
 
         public string Summary { get; set; }
     }
-
 
 
     [SubTypeOf(typeof(WeatherForecast))]

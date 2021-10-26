@@ -6,6 +6,7 @@
 
 References:
 ================
+  * [main library repo](https://msazure.visualstudio.com/One/_git/AGCI-CSF?path=/src/Service/OpenApi/OpenApiServiceExtension.cs&_a=contents&version=GBmaster)
   * [swaggerGenerationLibrary](https://msazure.visualstudio.com/One/_git/AGE-Documents?path=%2Fdocs%2FCommon%2FswaggerGenerationLibrary.md&version=GBmaster&_a=preview)
   * [more custom swagger filters](https://msazure.visualstudio.com/One/_git/DI-Agri?path=/src/PaaS/src/csharp/BaseNetCoreApp/ServiceCollectionExtentions/Helpers)
   * [autorest/extensions](http://azure.github.io/autorest/extensions/)

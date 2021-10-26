@@ -4,6 +4,61 @@
         <name>SomeWebApp</name>
     </assembly>
     <members>
+        <member name="T:Microsoft.Azure.AgPlatform.ResourceProviderService.Filters.ArmReusableParameters">
+            <summary>
+            Arm reusable parameters list.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.ResourceProviderService.Filters.ArmReusableParameters.GetSubscriptionIdParameter">
+            <summary>
+            GetSubscriptionIdParameter.
+            </summary>
+            <returns>OpenApiParameter for subscriptionId.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.ResourceProviderService.Filters.ArmReusableParameters.GetResourceGroupNameParameter">
+            <summary>
+            GetResourceGroupNameParameter.
+            </summary>
+            <returns>OpenApiParameter for resourceGroupName.</returns>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.ResourceProviderService.Filters.ArmReusableParameters.GetApiVersionParameter">
+            <summary>
+            GetApiVersionParameter.
+            </summary>
+            <returns>OpenApiParameter for api-version.</returns>
+        </member>
+        <member name="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.FormatParametersFilter">
+            <summary>
+            Updates parameter value with references to corresponding document level reusable parameters.
+            Parameter name is used to identify reusable parameter reference. If not matching name is found in
+            reusable parameter list, parameter is included as it is.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.FormatParametersFilter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.FormatParametersFilter"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.FormatParametersFilter.#ctor(System.Collections.Generic.IDictionary{System.String,Microsoft.OpenApi.Models.OpenApiParameter})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.FormatParametersFilter"/> class.
+            </summary>
+            <param name="parameters">List of reusable parameters.</param>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.FormatParametersFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Applies filter.
+            </summary>
+            <param name="operation">OpenApiOperation.</param>
+            <param name="context">DocumentFilterContext.</param>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.FormatParametersFilter.GetParameterReferenceByName">
+            <summary>
+            Dictionary of ARM reusable parameter references + service specific reusable parameters references if any.
+            Key: Parameter name, Value: Parameter reference object.
+            </summary>
+            <returns>Dictionary of reusable paramters references.</returns>
+        </member>
         <member name="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.HideInDocsAttribute">
             <summary>
             A marker attribute which can be applied to an API or controller to hide from docs.
@@ -22,6 +77,123 @@
             </summary>       
         </member>
         <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.HideInDocsFilter.Apply(Microsoft.OpenApi.Models.OpenApiDocument,Swashbuckle.AspNetCore.SwaggerGen.DocumentFilterContext)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.LongRunningOperationAttribute">
+            <summary>
+            Some REST operations can take a long time to complete. Although REST is not supposed to be stateful,
+            some operations are made asynchronous while waiting for the state machine to create the resources,
+            and will reply before the operation on resources are completed.
+            When x-ms-long-running-operation is specified, there should also be a x-ms-long-running-operation-options specified.
+            This attribute should be used when the final state is conveyed using the location header.
+            </summary>
+            <see href="https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#asynchronous-operations">Asynchronous Operations.</see>
+            <see href="https://github.com/Azure/autorest/tree/master/docs/extensions#x-ms-long-running-operation">x-ms-long-running-operation.</see>
+        </member>
+        <member name="P:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.LongRunningOperationAttribute.FinalStateVia">
+            <summary>
+            Final state via enum.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.LongRunningOperationFilter">
+            <summary>
+            Adds x-ms-long-running-operation extenstion to opertaion marked with <see cref="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.LongRunningOperationAttribute"/>.
+            Some REST operations can take a long time to complete. Although REST is not supposed to be stateful,
+            some operations are made asynchronous while waiting for the state machine to create the resources,
+            and will reply before the operation on resources are completed.
+            When x-ms-long-running-operation is specified, there should also be a x-ms-long-running-operation-options specified.
+            This attribute should be used when the final state is conveyed using the location header.
+            </summary>
+            <see href="https://github.com/Azure/autorest/blob/master/docs/extensions/readme.md#x-ms-long-running-operation">x-ms-long-running-operation.</see>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.LongRunningOperationFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Applies filter.
+            </summary>
+            <param name="operation">OpenApiOperation.</param>v
+            <param name="context">DocumentFilterContext.</param>
+        </member>
+        <member name="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.LongRunningOperationFinalStateVia">
+            <summary>
+            Long running operation types for swagger extension filter attribute.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.LongRunningOperationFinalStateVia.AzureAsyncOperation">
+            <summary>
+            The final response will be available at the uri pointed to by the header Azure-AsyncOperation.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.LongRunningOperationFinalStateVia.Location">
+            <summary>
+            The final response will be available at the uri pointed to by the header Location
+            </summary>
+        </member>
+        <member name="F:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.LongRunningOperationFinalStateVia.OriginalUri">
+            <summary>
+            The final response will be available via GET at the original resource URI
+            </summary>
+        </member>
+        <member name="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.RemoveDuplicateApiVersionParameterFilter">
+             <summary>
+             By default MVC API versioning library adding "api-version" query parameter to each API.
+             And it is getting duplicated when there is an additional model binding with
+             same "api-version" parameter in any API while actually using this parameter.
+            
+             This operation filter removes the duplicated "api-version" query parameter.
+             </summary>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.RemoveDuplicateApiVersionParameterFilter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.RemoveDuplicateApiVersionParameterFilter"/> class.
+            </summary>
+            <param name="config">API config.</param>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.RemoveDuplicateApiVersionParameterFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.SetBodyNameExtension">
+            <summary>
+            Updates the body parameter's name.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.SetBodyNameExtension.Apply(Microsoft.OpenApi.Models.OpenApiRequestBody,Swashbuckle.AspNetCore.SwaggerGen.RequestBodyFilterContext)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.SetCustomParametersFilter">
+            <summary>
+            Populates 'parameter' property with list of all the reusable parameters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.SetCustomParametersFilter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.SetCustomParametersFilter"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.SetCustomParametersFilter.#ctor(System.Collections.Generic.IDictionary{System.String,Microsoft.OpenApi.Models.OpenApiParameter})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.SetCustomParametersFilter"/> class.
+            </summary>
+            <param name="parameters">List of resuable parameters.</param>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.SetCustomParametersFilter.Apply(Microsoft.OpenApi.Models.OpenApiDocument,Swashbuckle.AspNetCore.SwaggerGen.DocumentFilterContext)">
+            <summary>
+            Applies filter.
+            </summary>
+            <param name="swaggerDoc">OpenApiDocument.</param>
+            <param name="context">DocumentFilterContext.</param>
+        </member>
+        <member name="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.SwaggerDefaultValuesFilter">
+            <summary>
+            Represents the Swagger/Swashbuckle operation filter used to document the implicit API version parameter.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.SwaggerDefaultValuesFilter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.SwaggerDefaultValuesFilter"/> class.
+            </summary>
+            <param name="config">API config.</param>
+        </member>
+        <member name="M:Microsoft.Azure.AgPlatform.BaseNetCoreApp.ServiceCollectionExtentions.Helpers.SwaggerDefaultValuesFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
             <inheritdoc/>
         </member>
     </members>
